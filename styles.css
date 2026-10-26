@@ -1,0 +1,614 @@
+/* Saep: a Thai fire kitchen on Jægersborggade. Smoke, lime, a late table. */
+
+@font-face {
+  font-family: "Fraunces";
+  src: url("assets/fonts/fraunces.woff2") format("woff2-variations");
+  font-weight: 300 800;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Fraunces";
+  src: url("assets/fonts/fraunces-italic.woff2") format("woff2-variations");
+  font-weight: 300 800;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Instrument Sans";
+  src: url("assets/fonts/instrument-sans.woff2") format("woff2-variations");
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+/* Thai glyphs only; Latin falls through to Fraunces. */
+@font-face {
+  font-family: "Charm";
+  src: url("assets/fonts/charm-thai.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0E01-0E5B, U+200C-200D, U+25CC;
+}
+
+:root {
+  /* Palette: rice paper, char, chilli, young lime */
+  --paper: #f3ede2;
+  --paper-deep: #e8dfcf;
+  --char: #1b1612;
+  --ink: #221c17;
+  --ink-dim: #6b5f53;
+  --rule: rgb(34 28 23 / 0.18);
+  --chilli: #c7361b;
+  --chilli-deep: #a82c15;
+  --lime: #b9d04a;
+
+  --serif: "Fraunces", "Iowan Old Style", Georgia, serif;
+  --sans: "Instrument Sans", ui-sans-serif, system-ui, sans-serif;
+  --thai: "Charm", var(--serif);
+
+  --gutter: clamp(1rem, 4vw, 3.5rem);
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Paper grain: a faint noise over everything, so the cream reads as stock, not a hex value. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+  opacity: 0.35;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.45 0 0 0 0 0.38 0 0 0 0 0.3 0 0 0 0.09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+h1,
+h2,
+p,
+dl,
+dd,
+ol,
+figure {
+  margin: 0;
+}
+
+ol {
+  padding: 0;
+  list-style: none;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--chilli);
+  outline-offset: 4px;
+}
+
+.skip {
+  position: absolute;
+  left: var(--gutter);
+  top: -4rem;
+  z-index: 60;
+  padding: 0.75rem 1rem;
+  background: var(--char);
+  color: var(--paper);
+}
+.skip:focus {
+  top: 1rem;
+}
+
+.eyebrow {
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}
+
+[lang="th"] {
+  font-family: var(--thai);
+}
+
+/* Serif display type: optical size follows the font size. */
+.hero-title,
+.intro-title,
+.balance-title,
+.balance-finale,
+.after-title,
+.wordmark {
+  font-family: var(--serif);
+  font-optical-sizing: auto;
+  font-weight: 380;
+  letter-spacing: -0.02em;
+}
+
+em {
+  font-style: italic;
+}
+.hero-title em,
+.balance-title em,
+.balance-finale em {
+  color: var(--chilli);
+}
+
+/* ---------- Nav ---------- */
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  padding: 1.5rem var(--gutter);
+  border-bottom: 1px solid var(--rule);
+}
+
+.wordmark {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  font-size: 1.75rem;
+  font-weight: 500;
+  line-height: 1;
+  text-decoration: none;
+}
+.wordmark span {
+  font-size: 1.1rem;
+  color: var(--chilli);
+  letter-spacing: 0;
+}
+
+.nav nav {
+  margin-left: auto;
+}
+.nav ul {
+  display: flex;
+  gap: 1.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.nav a:not(.wordmark) {
+  font-size: 0.9375rem;
+  text-decoration: none;
+}
+.nav nav a:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.3em;
+}
+
+.nav-book {
+  padding: 0.6rem 1.1rem;
+  border-radius: 999px;
+  background: var(--char);
+  color: var(--paper);
+  transition: background 0.3s;
+}
+.nav-book:hover {
+  background: var(--chilli-deep);
+}
+
+/* ---------- Hero ---------- */
+
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  gap: clamp(2rem, 4vw, 4rem);
+  align-items: end;
+  padding: clamp(2.5rem, 6vw, 5rem) var(--gutter) clamp(3rem, 7vw, 6rem);
+  min-height: calc(100svh - 5rem);
+}
+
+.hero-copy {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+  padding-bottom: 0.5rem;
+}
+
+.hero-title {
+  font-size: clamp(3.4rem, 8.6vw, 9.5rem);
+  line-height: 0.92;
+  font-weight: 340;
+  letter-spacing: -0.035em;
+}
+.hero-title .line {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+}
+.hero-title .line > span {
+  display: block;
+  animation: rise 1.3s var(--ease-out) both;
+}
+.hero-title .line:nth-child(2) > span {
+  animation-delay: 0.1s;
+}
+.hero-title .line:nth-child(3) > span {
+  animation-delay: 0.2s;
+}
+
+.hero-eyebrow {
+  animation: fade 1s var(--ease-out) 0.1s both;
+}
+
+.hero-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 3rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--rule);
+  animation: fade 1s var(--ease-out) 0.6s both;
+}
+.hero-facts dt {
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}
+.hero-facts dd {
+  font-family: var(--serif);
+  font-size: 1.375rem;
+  line-height: 1.3;
+}
+
+.hero-media {
+  position: relative;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-height: 0;
+}
+.hero-media picture {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--char);
+  animation: unclip 1.5s var(--ease-out) 0.15s both;
+}
+.hero-media img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 42% 50%;
+}
+.hero-media figcaption {
+  font-size: 0.8125rem;
+  color: var(--ink-dim);
+  animation: fade 1s var(--ease-out) 0.9s both;
+}
+
+@keyframes rise {
+  from {
+    transform: translateY(105%);
+  }
+}
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes unclip {
+  from {
+    clip-path: inset(100% 0 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+/* ---------- Intro ---------- */
+
+.intro {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 9fr);
+  gap: 2rem;
+  padding: clamp(5rem, 12vw, 10rem) var(--gutter);
+  border-top: 1px solid var(--rule);
+}
+.intro-body {
+  display: grid;
+  gap: 2rem;
+  max-width: 60rem;
+}
+.intro-title {
+  font-size: clamp(1.75rem, 3.6vw, 3.25rem);
+  line-height: 1.12;
+}
+.intro-text {
+  max-width: 34rem;
+  color: var(--ink-dim);
+}
+
+/* ---------- Balance (the signature moment) ----------
+   Without motion it is a plain recipe: heading, five lines, the finished plate.
+   With motion (.motion on <html>) the section grows tall and the stage sticks,
+   so scrolling lands one line at a time while the photo moves to the plate. */
+
+.balance {
+  background: var(--paper-deep);
+}
+
+.balance-stage {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas:
+    "head frame"
+    "list frame"
+    "fin frame";
+  column-gap: clamp(2rem, 6vw, 6rem);
+  row-gap: 2.5rem;
+  padding: clamp(4rem, 8vw, 7rem) var(--gutter);
+}
+
+.balance-head {
+  grid-area: head;
+  display: grid;
+  gap: 1rem;
+}
+.balance-title,
+.balance-finale {
+  font-size: clamp(2.25rem, 4.6vw, 4.5rem);
+  line-height: 1;
+}
+.balance-finale {
+  grid-area: fin;
+}
+
+.tastes {
+  grid-area: list;
+  align-self: start;
+  border-top: 1px solid var(--rule);
+}
+.taste {
+  position: relative;
+  display: grid;
+  grid-template-columns: 5.5rem minmax(0, 1fr);
+  grid-template-areas:
+    "th name"
+    "th step";
+  column-gap: 1.25rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--rule);
+}
+/* The chilli rule that draws under a line as it lands. */
+.taste::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: var(--chilli);
+  transform: scaleX(var(--drawn, 1));
+  transform-origin: left;
+}
+.taste-th {
+  grid-area: th;
+  align-self: center;
+  font-size: clamp(1.75rem, 2.6vw, 2.5rem);
+  line-height: 1.2;
+  color: var(--chilli);
+}
+.taste-name {
+  grid-area: name;
+  font-family: var(--serif);
+  font-size: 1.25rem;
+  line-height: 1.3;
+}
+.taste-step {
+  grid-area: step;
+  font-size: 0.9375rem;
+  color: var(--ink-dim);
+}
+
+.balance-frame {
+  grid-area: frame;
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: var(--char);
+}
+.balance-shot {
+  position: absolute;
+  inset: 0;
+}
+.balance-shot picture,
+.balance-shot img {
+  width: 100%;
+  height: 100%;
+}
+.balance-shot img {
+  object-fit: cover;
+}
+.balance-shot figcaption {
+  position: absolute;
+  left: 1rem;
+  bottom: 1rem;
+  padding: 0.35rem 0.7rem;
+  background: var(--paper);
+  font-size: 0.8125rem;
+  letter-spacing: 0.04em;
+}
+
+/* Motion on: a tall track and a sticky stage that fits one screen. */
+.motion .balance {
+  height: 560vh;
+}
+.motion .balance-stage {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  padding-block: clamp(2rem, 6vh, 4.5rem);
+}
+.motion .balance-frame {
+  aspect-ratio: auto;
+  height: 100%;
+}
+/* The closing line sits over the heading and they trade places at the end. */
+.motion .balance-stage {
+  grid-template-rows: auto 1fr;
+}
+.motion .balance-finale {
+  grid-area: head;
+  align-self: end;
+}
+.motion .tastes {
+  align-self: stretch;
+  display: grid;
+  grid-auto-rows: minmax(0, 1fr);
+}
+.motion .taste {
+  align-content: center;
+}
+@media (min-width: 860px) {
+  .motion .taste-th {
+    font-size: clamp(2rem, 3.4vw, 3.25rem);
+  }
+  .motion .taste {
+    grid-template-columns: 7rem minmax(0, 1fr);
+  }
+}
+
+/* ---------- After ---------- */
+
+.after {
+  display: grid;
+  gap: 1rem;
+  padding: clamp(5rem, 10vw, 8rem) var(--gutter);
+}
+.after-title {
+  max-width: 40rem;
+  font-size: clamp(1.75rem, 3vw, 2.75rem);
+  line-height: 1.1;
+}
+
+/* ---------- Footer ---------- */
+
+.footer {
+  padding: 2rem var(--gutter) 3rem;
+  border-top: 1px solid var(--rule);
+}
+.footer-base {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem 3rem;
+  font-size: 0.8125rem;
+  color: var(--ink-dim);
+}
+.footer-base p {
+  max-width: 40rem;
+}
+
+/* ---------- Phones and narrow tablets ---------- */
+
+@media (max-width: 859px) {
+  .nav {
+    flex-wrap: wrap;
+    gap: 1rem 1.5rem;
+    padding-block: 1rem;
+  }
+  .nav nav {
+    margin-left: 0;
+    order: 3;
+    width: 100%;
+  }
+  .nav-book {
+    margin-left: auto;
+  }
+
+  .hero {
+    grid-template-columns: minmax(0, 1fr);
+    min-height: 0;
+  }
+  .hero-media picture {
+    flex: none;
+    aspect-ratio: 4 / 3;
+  }
+
+  .intro {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .balance-stage {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto auto auto;
+    grid-template-areas:
+      "head"
+      "frame"
+      "list"
+      "fin";
+    row-gap: 1.25rem;
+  }
+  .balance-frame {
+    aspect-ratio: 4 / 3;
+  }
+  .taste {
+    grid-template-columns: 4rem minmax(0, 1fr);
+    padding: 0.6rem 0;
+  }
+  .taste-th {
+    font-size: 1.6rem;
+  }
+  .taste-name {
+    font-size: 1.0625rem;
+  }
+  .taste-step {
+    font-size: 0.875rem;
+    line-height: 1.4;
+  }
+
+  .motion .balance-stage {
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    padding-block: 1.25rem;
+  }
+  .motion .balance-title,
+  .motion .balance-finale {
+    font-size: clamp(1.75rem, 8vw, 2.5rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
