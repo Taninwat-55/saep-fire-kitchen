@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Book a seat · Saep</title>
+    <meta name="description" content="Book seats at Saep's counter: one seating at 19:00, Wednesday to Saturday. This concept form sends nothing." />
+    <meta name="theme-color" content="#f3ede2" />
+    <link rel="preload" href="assets/fonts/fraunces.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="assets/fonts/instrument-sans.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+
+    <header class="nav">
+      <a class="wordmark" href="index.html" aria-label="Saep, home">Saep<span lang="th">แซ่บ</span></a>
+      <nav aria-label="Main">
+        <ul>
+          <li><a href="menu.html">Menu</a></li>
+          <li><a href="visit.html">Visit</a></li>
+        </ul>
+      </nav>
+      <a class="nav-book" href="book.html" aria-current="page">Book a seat</a>
+    </header>
+
+    <main id="main">
+      <section class="page-hero page-hero-tight" aria-labelledby="page-title">
+        <p class="eyebrow">Book a seat</p>
+        <h1 class="page-title" id="page-title">Six seats, <em>seven o’clock.</em></h1>
+        <p class="page-lead">Pick a night and how many of you. We hold the seats for 24 hours while you confirm by email.</p>
+      </section>
+
+      <section class="booking" aria-label="Booking">
+        <form class="booking-form" novalidate>
+          <fieldset>
+            <legend>The night</legend>
+            <label class="field" for="date">
+              <span>Date</span>
+              <input type="date" id="date" name="date" required aria-describedby="date-hint" />
+            </label>
+            <p class="hint" id="date-hint" data-seats aria-live="polite">Wednesday to Saturday, up to the end of next month.</p>
+          </fieldset>
+
+          <fieldset>
+            <legend>How many of you</legend>
+            <div class="chips">
+                <label class="chip"><input type="radio" name="guests" value="1" /><span>1</span></label>
+                <label class="chip"><input type="radio" name="guests" value="2" checked /><span>2</span></label>
+                <label class="chip"><input type="radio" name="guests" value="3" /><span>3</span></label>
+                <label class="chip"><input type="radio" name="guests" value="4" /><span>4</span></label>
+                <label class="chip"><input type="radio" name="guests" value="5" /><span>5</span></label>
+                <label class="chip"><input type="radio" name="guests" value="6" /><span>6</span></label>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>To drink</legend>
+            <div class="choices">
+              <label class="choice"><input type="radio" name="pairing" value="none" data-price="0" checked /><span class="choice-name">No pairing</span><span class="choice-price">Order by the glass</span></label>
+              <label class="choice"><input type="radio" name="pairing" value="juice" data-price="550" /><span class="choice-name">Juice and tea pairing</span><span class="choice-price">550 kr a person</span></label>
+              <label class="choice"><input type="radio" name="pairing" value="wine" data-price="950" /><span class="choice-name">Wine pairing</span><span class="choice-price">950 kr a person</span></label>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>About you</legend>
+            <label class="field" for="name"><span>Name</span><input type="text" id="name" name="name" autocomplete="name" required /></label>
+            <label class="field" for="email"><span>Email</span><input type="email" id="email" name="email" autocomplete="email" required /></label>
+            <label class="field" for="allergies"><span>Allergies or anything we should know <em>(optional)</em></span><textarea id="allergies" name="allergies" rows="3"></textarea></label>
+          </fieldset>
+
+          <p class="form-error" data-error role="alert" hidden></p>
+          <button class="button" type="submit">Request seats</button>
+        </form>
+
+        <div class="confirmation" data-confirmation hidden>
+          <h2 class="confirmation-title" data-confirmation-title tabindex="-1">Thank you.</h2>
+          <p data-confirmation-text></p>
+          <p class="summary-note">Nothing was sent: Saep is a concept, and so is this booking.</p>
+        </div>
+
+        <aside class="summary" aria-label="Your booking">
+          <figure class="summary-media">
+            <picture>
+              <source type="image/avif" srcset="assets/img/pass-640.avif 640w, assets/img/pass-1280.avif 1280w, assets/img/pass-1920.avif 1920w" sizes="(min-width: 860px) 30vw, 100vw" />
+              <img src="assets/img/pass-1280.webp" srcset="assets/img/pass-640.webp 640w, assets/img/pass-1280.webp 1280w, assets/img/pass-1920.webp 1920w" sizes="(min-width: 860px) 30vw, 100vw" width="1920" height="2880" alt="A chef pointing at a finished seafood plate on a wooden counter." loading="lazy" />
+            </picture>
+          </figure>
+          <p class="eyebrow">Your evening</p>
+          <p class="summary-line" data-summary aria-live="polite">Pick a night.</p>
+          <p class="summary-total"><span data-total>2,900</span> kr</p>
+          <p class="summary-note">Twelve courses at 1,450 kr a person, plus any pairing. Paid on the night.</p>
+          <p class="summary-note">This is a design concept: the form checks itself and sends nothing.</p>
+
+        </aside>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-top">
+        <a class="footer-mark" href="index.html">Saep<span lang="th">แซ่บ</span></a>
+        <div>
+          <p class="eyebrow">Find us</p>
+          <p>Jægersborggade 22<br />2200 København N</p>
+        </div>
+        <div>
+          <p class="eyebrow">One seating</p>
+          <p>Wednesday to Saturday<br />Doors 18:45, dinner 19:00</p>
+        </div>
+        <nav aria-label="Footer">
+          <p class="eyebrow">Pages</p>
+          <ul>
+            <li><a href="menu.html">The menu</a></li>
+            <li><a href="visit.html">Visit</a></li>
+            <li><a href="book.html">Book a seat</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="footer-base">
+        <p>Saep is a design concept. The restaurant, the chef and the menu are invented, and nothing on this site takes a booking.</p>
+        <p>Photos from Unsplash: Derek Lee, Ratchanon Phalamkon, Sri Widosari, Katherine Hanlon, Chandan Chaurasia, Sirasit Gullasu, Alfonso Betancourt, Meg von Haartman, Madeline Liu, Nick Karvounis, Alexandra Tran, Antonio Araujo, emy, Markus Winkler, Iuliia Dutchak.</p>
+      </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
+    <script src="script.js" defer></script>
+  </body>
+</html>

@@ -1,85 +1,71 @@
-# Saep — Fire Kitchen
+# Saep
 
-A scroll-driven site for **Saep**, a (fictional) Thai fire kitchen on Jægersborggade in
-Nørrebro, Copenhagen. Built as a portfolio piece.
+A website for a Thai chef's table in Nørrebro that does not exist. Six seats at the counter, one seating a
+night, twelve courses. It is a design concept, built to show what an editorial site with one strong scroll
+moment can do for a small restaurant.
 
-The brief was an award-site-calibre restaurant page where scrolling *is* the content —
-not decoration on top of it.
+**Live:** <https://saep-fire-kitchen.netlify.app>
 
-## The idea
+## What it is
 
-Thai cooking balances five tastes, and no dish tastes of one thing. So the page is a
-**descent through the five tastes**, one chapter at a time:
+Four pages:
 
-| | Taste | Ingredient drawn | Accent |
-|---|---|---|---|
-| 01 | เผ็ด · *phet* — spicy | bird's eye chilli | `#FF3D17` chilli |
-| 02 | เปรี้ยว · *priao* — sour | makrut lime leaf | `#C8E85A` young lime |
-| 03 | เค็ม · *khem* — salty | the anchovies behind nam pla | `#86AEBE` brine |
-| 04 | หวาน · *waan* — sweet | sugar-palm frond | `#E0913F` palm sugar |
-| 05 | หอม · *hom* — aromatic | lemongrass + galangal | `#8877E6` dusk |
+- **Home.** The hero, the kitchen in one sentence, and the signature moment: **Balance**. A sticky stage
+  shows how a som tam is made. As you scroll, the five Thai tastes land one at a time (spicy, sour, salty,
+  sweet, fragrant) while the photo moves from chilli to lime to the mortar to the herbs. Then the plate
+  lands in the frame, grows to fill the screen, and the closing line comes up over it. After that: four
+  courses from tonight's menu, the chef, the counter, and a way to book.
+- **Menu** (`menu.html`). The twelve courses, the pairings and the notes on allergies and heat.
+- **Visit** (`visit.html`). Address, getting there, the seating, access and house rules.
+- **Book** (`book.html`). A working booking form. It knows the kitchen cooks Wednesday to Saturday, that
+  bookings run to the end of next month, and how many seats are left on a night (made up, but the same
+  date always gives the same answer). A summary totals the price as you choose. It sends nothing and says so.
 
-Each chapter pins for a full viewport while its ingredient **draws itself** in that
-taste's colour, then all five converge into a balance wheel — the bowl you have just
-walked through. After that: the 220°C wok, the menu, a heat control, the room, the table.
+## Stack
 
-The page's accent colour is a single live variable that lerps between chapters, so the
-whole room changes temperature as you descend — cool brine in the middle, violet at
-dusk, back to ember for the booking.
+- Plain HTML, CSS and JavaScript. No framework, no bundler, no `npm install`.
+- **GSAP 3.12.5** with **ScrollTrigger** for the scrubbed timeline, and **Lenis 1.1.13** for smooth scroll,
+  both from a CDN.
+- **Fraunces**, **Instrument Sans** and the Thai glyphs of **Charm**, self-hosted in `assets/fonts`.
+- Photos in `assets/img` as AVIF and WebP at 640, 1280 and 1920 px wide.
 
-## How it's built
+Each page's own code (HTML, CSS and JS together) is 12 to 14 KB gzipped.
 
-One HTML file, **no frameworks and no libraries.** The eight dish photographs are
-embedded as WebP data URIs; every other mark on the page is drawn in code.
+## Running it
 
-- **Scroll engine** — one `requestAnimationFrame` loop writes a `0→1` progress value per
-  section as a CSS custom property (`--p`). All layout motion is then plain CSS `calc()`
-  off that one number: no per-element JS style writes, no scroll listeners.
-- **Ingredients** — drawn procedurally on canvas from sampled bézier polylines. Progress
-  controls how much of the stroke set is drawn, which is what produces the
-  drawing-itself effect. Glow is layered strokes, not `shadowBlur` (which drops frames).
-- **Colour** — five taste accents as RGB triples, lerped per frame into `--flavor`.
-  Canvas repaints when the accent is still travelling, so a drawing never keeps the
-  previous chapter's colour.
-- **Menu** — vertical scroll drives horizontal travel; collapses to a stack under 860px.
-  Each plate is the dish itself: a photograph sunk into the room behind a vignette,
-  with the kitchen's heat rating drawn around the rim as a gauge arc — one fifth of
-  the circle per chilli. It brightens and pushes in on hover.
-- **Ornament** — a *lai krajang* border, the lotus-bud row that runs along temple
-  eaves and the rim of an enamel som tam tray, drawn procedurally as the one divider
-  on the page.
-- **Accessibility** — `prefers-reduced-motion` unpins every section, disables the
-  ambient canvas, and renders each chapter in its finished state. Visible focus rings,
-  skip link, labelled fields, no keyboard traps.
+Any static server works; there is nothing to compile.
 
-## Type
-
-- **Charm** — Thai display. Looped, calligraphic; the reason the Thai words carry the page.
-- **Fraunces** — Latin display, used at extremes of size.
-- **Instrument Sans** — body.
-- **Martian Mono** — labels, prices, data.
-
-Deliberately single-theme: this page is a night kitchen, so there is no light variant.
-Every colour is painted explicitly rather than inherited.
-
-## Run it
-
-```
-open index.html
+```sh
+python3 -m http.server 3000
 ```
 
-No build step, no dependencies.
+Then open <http://127.0.0.1:3000>.
 
-## Photo credits
+## Adding a photo
 
-Dish photographs via Wikimedia Commons, under their own licences — tom yam kung:
-Vee Satayamas (CC BY 2.0) · som tam, Yasothon: Dragfyre (CC BY-SA 3.0) ·
-larb ped, khao soi kai, kaeng khiao wan, pla thot: Takeaway (CC BY-SA) · phat kaphrao: PattayaPatrol
-(CC BY-SA 4.0) · khao niao mamuang: Arthur Taksin (CC BY 4.0). Each is resized and
-re-encoded as WebP; attribution also appears in the page footer.
+```sh
+sh tools/images.sh ~/Downloads/photo.jpg name
+```
 
-## Note
+This writes `assets/img/name-{640,1280,1920}.{avif,webp}`. It needs `ffmpeg` with SVT-AV1 and `cwebp` (both
+from Homebrew). Commit the output, so the site stays build-free.
 
-Saep is invented. The chef, the address, the suppliers and the prices are written to feel
-real, but no such restaurant exists — it's a design showcase. The reservation form
-confirms in-page and sends nothing.
+## Notes
+
+- **Motion is an extra.** Without JavaScript, or with reduced motion turned on, nothing pins or scrubs.
+  Balance reads as a plain recipe with the finished plate, and the booking form still works.
+- **The hero entrance is pure CSS**, so it never waits on the CDN. There is no loader.
+- **Pages change with a native cross-document view transition.** Browsers without support just load the
+  next page.
+- **One palette, light paper.** Rice paper, char, chilli and a rare lime. The counter section and the footer
+  are the only dark parts.
+
+## Credits
+
+Photos from Unsplash: Derek Lee (kitchen), Ratchanon Phalamkon (chilli), Sri Widosari (makrut lime),
+Katherine Hanlon (mortar), Chandan Chaurasia (basil), Sirasit Gullasu (som tam), Alfonso Betancourt (plating),
+Meg von Haartman (counter), Madeline Liu (prawn, the pass), Nick Karvounis (broth), Alexandra Tran (larb),
+Antonio Araujo (scallop), emy (curry), Markus Winkler (mango), Iuliia Dutchak (street).
+
+The restaurant, the chef and the menu are invented. The first version of Saep, a single-file canvas piece
+with five scroll chapters, lives in the history at commit `87afad6`.
